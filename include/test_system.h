@@ -3,7 +3,6 @@
 #include <string>
 #include <map>
 #include <memory>
-#include <boost/uuid/uuid.hpp>
 #include <regex>
 
 #include <stdint.h>
@@ -19,23 +18,23 @@
 	#define NAME_WITH_LINE(name, line) NAME_WITH_LINE1(name, line)
 #endif
 
-/*
+
 //  Windows
-#if BOOST_OS_WINDOWS
+//#if BOOST_OS_WINDOWS
 #include <intrin.h>
-uint64_t rdtsc()
+size_t rdtsc()
 {
-	return __rdtsc();
+	return static_cast<size_t>(__rdtsc());
 }
-#elif BOOST_OS_LINUX
-*/
-uint64_t rdtsc()
+//#elif BOOST_OS_LINUX
+
+/*size_t rdtsc()
 {
 	unsigned int lo, hi;
 	__asm__ __volatile__("rdtsc" : "=a" (lo), "=d" (hi));
 	return ((uint64_t) hi << 32) | lo;
 }
-//#endif
+//#endif*/
 
 namespace std
 {
@@ -228,7 +227,7 @@ bool register_test(std::string testClass, std::string testName, std::string path
 \
 	virtual void test();\
 };\
-static bool __attribute__((unused)) NAME_WITH_LINE(registerFunction,__COUNTER__) = register_test<FunctorName>(#testClass, #testName, path, std::to_string(line), testType);\
+static bool NAME_WITH_LINE(registerFunction,__COUNTER__) = register_test<FunctorName>(#testClass, #testName, path, std::to_string(line), testType);\
 \
 void FunctorName::test()\
 
@@ -246,8 +245,8 @@ void RUN_TESTS(std::string testCategoryRegex = ".*", const std::string testNameR
 		std::string functionCategory = typeFunctions.first;
 		
 		std::regex regex(std::move(testCategoryRegex));
-		bool allowedType = std::regex_match(functionCategory, regex);
-		if(!allowedType){
+		const bool allowedCategory = std::regex_match(functionCategory, regex);
+		if(!allowedCategory){
 			continue;
 		}
 
