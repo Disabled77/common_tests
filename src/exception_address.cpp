@@ -1,11 +1,8 @@
-#pragma once
-
 #include <iostream>
 #include <exception>
 #include <string>
 
-#include "test_system.h"
-
+#include "test_system.hpp"
 TEST_FUNCTION(Exception, throw_same_address){
     size_t error0_address = 0;
     try{

@@ -5,8 +5,6 @@
 #include <memory>
 #include <regex>
 
-#include <stdint.h>
-
 //#if BOOST_OS_WINDOWS
 //#define CURRENT_PRETTY_FUNCTION __FUNCTION__ 
 //#elif BOOST_OS_LINUX
@@ -18,11 +16,13 @@
 	#define NAME_WITH_LINE(name, line) NAME_WITH_LINE1(name, line)
 #endif
 
-
 //  Windows
 //#if BOOST_OS_WINDOWS
 #include <intrin.h>
-size_t rdtsc()
+#include <iostream>
+
+
+static size_t rdtsc()
 {
 	return static_cast<size_t>(__rdtsc());
 }
@@ -40,7 +40,7 @@ namespace std
 {
 
 template <typename T>
-string to_string(const std::vector<T>& vector)
+static string to_string(const std::vector<T>& vector)
 {
 	std::string result;
 	static constexpr size_t MAGIC_NUMBER = 10;
@@ -50,7 +50,7 @@ string to_string(const std::vector<T>& vector)
 	return result;
 }
 
-string to_string(const std::string& row)
+static string to_string(const std::string& row)
 {
 	if(row.empty()) {
 		return "";
@@ -58,32 +58,32 @@ string to_string(const std::string& row)
 	return row + " ";
 }
 
-string to_string(const bool& flag)
+static string to_string(const bool& flag)
 {
 	return flag ? "true " : "false ";
 }
 
 
-string to_string(void* address)
+static string to_string(void* address)
 {
 	return std::to_string(std::uintptr_t(address));
 }
 
 template <typename T, size_t numberOfElements>
-string to_string(const T(&array)[numberOfElements])
+static string to_string(const T(&array)[numberOfElements])
 {
 	return std::string(array, numberOfElements);
 }
 
 } //namespace std
 
-bool& test_flag()
+static bool& test_flag()
 {
 	static bool testFlag = true;
 	return testFlag;
 }
 
-bool& all_test_flag()
+static bool& all_test_flag()
 {
 	static bool allTests = true;
 	return allTests;
@@ -187,11 +187,7 @@ struct ITestFunctor
 	}
 };
 
-static std::map <std::string, std::vector<std::shared_ptr<ITestFunctor>>>& get_functions()
-{
-	static std::map <std::string, std::vector<std::shared_ptr<ITestFunctor>>> functions;
-	return functions;
-}
+std::map <std::string, std::vector<std::shared_ptr<ITestFunctor>>>& get_functions();
 
 template<typename Test>
 struct TestRegister
@@ -236,7 +232,7 @@ void FunctorName::test()\
 
 #define TEST_FUNCTION(testClass, testName) TEST_FUNCTION_TYPE(testClass, testName, TestType::COMMON) 
 
-void RUN_TESTS(std::string testCategoryRegex = ".*", const std::string testNameRegex = ".*", const TestType testType = TestType::ALL)
+static void RUN_TESTS(std::string testCategoryRegex = ".*", const std::string testNameRegex = ".*", const TestType testType = TestType::ALL)
 {
 	std::string lastPathFile;
 
