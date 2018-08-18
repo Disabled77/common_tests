@@ -7,9 +7,9 @@ if not exist .gitignore (
 echo here should be text
 )>".gitignore"
 
-if exist "build" and not exist "build/.gitignore" echo "*.*" > "build/.gitignore"
-if exist "bin" and not exist "bin/.gitignore" echo "*.*" > "bin/.gitignore"
-if exist ".vs" and not exist ".vs/.gitignore" echo "*.*" > ".vs.gitignore"
+if exist "build" if not exist "build/.gitignore" echo *.* > "build/.gitignore"
+if exist "bin" if not exist "bin/.gitignore" echo *.* > "bin/.gitignore"
+if exist ".vs" if not exist ".vs/.gitignore" echo *.* > ".vs/.gitignore"
 exit /b
 
 :HELP
