@@ -132,11 +132,13 @@ void EXPECT_IMPL(std::string filePath, const std::string line, const std::string
 	};
 }
 
-#define EXPECT_EQ(first, second) EXPECT_IMPL(__FILE__, std::to_string(__LINE__), "EXPECT_EQ", first, second);
-#define EXPECT_NE(first, second) EXPECT_IMPL(__FILE__, std::to_string(__LINE__), "EXPECT_NE", first, second, false);
-#define EXPECT_TRUE(first) EXPECT_IMPL(__FILE__, std::to_string(__LINE__), "EXPECT_TRUE", first, true);
-#define EXPECT_FALSE(first) EXPECT_IMPL(__FILE__,std::to_string(__LINE__), "EXPECT_FALSE", first, false);
+#define EXPECT_IMPL_WITH_FILE_LINES(logCondition, first, second, expectResult) EXPECT_IMPL(__FILE__, std::to_string(__LINE__), logCondition, first, second, expectResult);
 
+#define EXPECT_EQ(first, second) EXPECT_IMPL_WITH_FILE_LINES("EXPECT_EQ", first, second, true);
+#define EXPECT_NE(first, second) EXPECT_IMPL_WITH_FILE_LINES("EXPECT_NE", first, second, false);
+#define EXPECT_TRUE(first) EXPECT_IMPL_WITH_FILE_LINES("EXPECT_TRUE", first, true, true);
+#define EXPECT_FALSE(first) EXPECT_IMPL_WITH_FILE_LINES("EXPECT_FALSE", first, false, true);
+#define EXPECT_NULLPTR(first) EXPECT_IMPL_WITH_FILE_LINES("EXPECT_FALSE", first, nullptr, true);
 
 template <typename TestFunction>
 void RUN_TEST_IMPL(const std::string functionName, TestFunction test)
