@@ -1,9 +1,7 @@
 #pragma once
-#include <x86intrin.h>
 #include <stdexcept>
 #include <random>
 #include <array>
-#include <tgmath.h>
 
 namespace common {
 

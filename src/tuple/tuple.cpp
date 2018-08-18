@@ -28,7 +28,7 @@ TEST_FUNCTION(Tuple, with_function){
 
   std::tuple<int,int> tuple{ left, right };
   //const int sum = applyTuple(sum, tuple); doesnt work
-  const int sum = applyTuple(add, tuple); // work
+  const auto sum = applyTuple(add, tuple); // work
   EXPECT_EQ(sum, int(6));
 }
 
